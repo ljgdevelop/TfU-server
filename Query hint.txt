@@ -1,0 +1,32 @@
+DB 테이블 정리
+
+1. SCHEDULE: schedule
+2. SHAREDSCHEDULE: shared schedule
+3. WAYPOINT: waypoint
+4. CLIENT: client
+5. S3: aws s3
+
+
+DB query
+
+1. 데이터베이스
+    목록 : SHOW DATABASES;
+    생성 : CREATE DATABASE [이름];
+    삭제 : DROP DATABASE [이름];
+    선택 : USE [이름];
+
+2. 테이블
+    목록 : SHOW TABLES;
+    구조 확인 : DESC [이름];
+    생성 : CREATE TABLE [이름] ([column1] [type] {option}, [column2] [type] --- );
+    삭제 : DROP TABLE [이름];
+    
+    Column 추가 : ALTER TABLE [테이블 이름] ADD [Column 이름] [type] {option};
+    Column type 변경 : ALTER TABLE [테이블 이름] MODIFY [column 이름] [type];
+
+    조회 : SELECT {option} FROM [테이블 이름] WHERE {option};
+
+    데이터 추가 : INSERT INTO [테이블 이름] ( {column 이름} ) VALUES ( {값} );
+    데이터 값 수정 : UPDATE [테이블 이름] SET [column 이름] = [값] WHERE {option};
+    데이터 삭제 : DELETE FROM [테이블 이름] WHERE {option};
+
