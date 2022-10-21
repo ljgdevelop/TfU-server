@@ -181,7 +181,7 @@ namespace TFUserver{
         public SharedSchedule convertDataRowToSharedSchedule(DataRow dataRow){
             SharedSchedule sch = new SharedSchedule();
             sch.ScheduleId = (int) dataRow["scheduleId"];
-            sch.OwnerId = (int) dataRow["ownerId"];
+            sch.OwnerId = (long) dataRow["ownerId"];
             sch.Rating = float.Parse(dataRow["rating"].ToString() ?? "0.0");
             sch.Likes = (int) dataRow["likes"];
             sch.SharedCount = (int) dataRow["likes"];

@@ -1,0 +1,8 @@
+{
+    "liveServer.settings.https": {
+    "enable": true, 
+    "cert": "/home/ubuntu/TfU-server/cert.pem", 
+    "key": "/home/ubuntu/TfU-server/key.pem", 
+    "passphrase": "tfupw"
+    }
+}

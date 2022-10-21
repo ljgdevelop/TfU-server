@@ -1,7 +1,7 @@
 namespace TFUserver{
     public class SharedSchedule{
         private int scheduleId;
-        private int ownerId;
+        private long ownerId;
         private float rating;
         private int likes;
         private int sharedCount;
@@ -11,7 +11,7 @@ namespace TFUserver{
         private List<WaypointDescription> descriptionList = new List<WaypointDescription>();
 
         public int ScheduleId {get { return scheduleId;} set{ this.scheduleId = value;}}
-        public int OwnerId {get { return ownerId;} set{ this.ownerId = value;}}
+        public long OwnerId {get { return ownerId;} set{ this.ownerId = value;}}
         public float Rating {get { return rating;} set{ this.rating = value;}}
         public int Likes {get { return likes;} set{ this.likes = value;}}
         public int SharedCount {get { return sharedCount;} set{ this.sharedCount = value;}}

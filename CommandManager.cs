@@ -35,9 +35,9 @@ namespace TFUserver
                             Server.Instance.stopServer();
                             isWorking = false;
                             break;
-                        case "upload waypoint":
+                        case "syncWP":
                             Console.WriteLine("[{0}] 관광지 정보를 로드합니다. 파일 위치 = /data", DateTime.Now.ToString("yy-MM-dd hh:mm:ss"));
-
+                            DBManager.Instance.insertWaypointIntoDB();
                             break;
                         default:
                             Console.WriteLine("[{0}] 잘못된 명령어.", DateTime.Now.ToString("yy-MM-dd hh:mm:ss"));

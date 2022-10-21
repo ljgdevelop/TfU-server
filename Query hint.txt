@@ -30,3 +30,20 @@ DB query
     데이터 값 수정 : UPDATE [테이블 이름] SET [column 이름] = [값] WHERE {option};
     데이터 삭제 : DELETE FROM [테이블 이름] WHERE {option};
 
+
+MERGE WAYPOINT AS [TARGET]
+	USING TB_SOURCE AS [SOURCE]
+	ON [TARGET].CUSTOM_ID = [SOURCE].CUSTOM_ID
+    
+	-- 테이블 TB_TARGET의 CUSTOM_ID 값이 TB_SOURCE의 CUSTOM_ID 중에 있을 경우
+    -- UPDATE
+    WHEN MATCHED THEN
+		UPDATE SET
+        	,[TARGET].CUSTOM_NAME = [SOURCE].CUSTOM_NAME
+        	,[TARGET].CUSTOM_REMARK = 'TB_SOURCE에 있는 사람입니다.'
+            
+    -- 테이블 TB_TARGET의 CUSTOM_ID 값이 TB_SOURCE의 CUSTOM_ID 중에 없을 경우
+	-- INSERT
+    WHEN NOT MATCHED THEN
+   		INSERT (CUSTOM_ID, CUSTOM_NAME, CUSTOM_REMARK)
+        VALUES (@@ROW_NUMBER, '링고비' ,'새로운 사람')

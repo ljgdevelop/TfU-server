@@ -20,9 +20,13 @@ namespace TFUserver{
         public int getEmptyKey(){
             using(System.Data.DataSet ds = DBManager.Instance.Select("select * from S3 where status = 0;"))
                 foreach(System.Data.DataRow row in ds.Tables[0].Rows)
-                    if(row[1].Equals("0"))
+                    if(row[1].Equals("0")){
+                        imageAdded((int) row[0]);
                         return (int) row[0];
-            return imageDictionary.Count;
+                    }
+            int id = DBManager.Instance.Select("select * from S3 where status = 1;").Tables[0].Rows.Count;
+            imageAdded(id);
+            return id;
         }
 
         private void syncStorageToDictionary(){

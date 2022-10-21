@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Web;
 using Newtonsoft.Json.Linq;
 
 namespace TFUserver
@@ -105,6 +106,26 @@ namespace TFUserver
 
                 Console.WriteLine("[{0}] 추천 일정 전송: count={1}", DateTime.Now.ToString("yy-MM-dd hh:mm:ss"), recommendList.Count);
             }
+            else if(rawUrl.StartsWith("/waypoints")){
+                try{
+                string? keyword = context.Request.QueryString["keyword"];
+                keyword = HttpUtility.UrlDecode(keyword, System.Text.Encoding.UTF8);
+                
+                List<Waypoint> waypoints = new List<Waypoint>();
+
+                string query = "SELECT * FROM WAYPOINT WHERE NAME LIKE '%" + keyword + "%'";
+                foreach(System.Data.DataRow row in DBManager.Instance.Select(query).Tables[0].Rows){
+                    waypoints.Add(new Waypoint().convertDataRowToWaypoint(row));
+                }
+                
+                var option = new System.Text.Json.JsonSerializerOptions{
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.Create(System.Text.Unicode.UnicodeRanges.All)
+                };
+                responseString += System.Text.Json.JsonSerializer.Serialize<List<Waypoint>>(waypoints, option).ToString();
+
+                Console.WriteLine("[{0}] 관광지 검색 정보 전송: keyword={2} count={1}", DateTime.Now.ToString("yy-MM-dd hh:mm:ss"), waypoints.Count, keyword);
+                }catch(Exception e){Console.Write(e);}
+            }
             else{
                 responseString = "unknownUrlAccess";
             }
@@ -198,6 +219,7 @@ namespace TFUserver
                 Console.WriteLine("[{0}] Schedule Added: id={1}, Dic Count={2}", DateTime.Now.ToString("yy-MM-dd hh:mm:ss"), schedule.ID, ScheduleManager.Instance.scheduleDic.Count);
             }
             else if(rawUrl.StartsWith("/sharedschedule")){
+                try{
                 Object[] attrs = {"scheduleId", "ownerId", "rating", "likes", "sharedCount", "titleImgId", "titleText", "descriptionText"};
                 JValue?[] result = new JValue[8];
                 for(int i = 0; i < 8; i++){
@@ -208,7 +230,7 @@ namespace TFUserver
                 
                 SharedSchedule schedule = new SharedSchedule();
                 schedule.ScheduleId = result[0]?.Value<int?>() ?? 0;
-                schedule.OwnerId = result[1]?.Value<int?>() ?? 0;
+                schedule.OwnerId = result[1]?.Value<long?>() ?? 0;
                 schedule.Rating = result[2]?.Value<float?>() ?? 0;
                 schedule.Likes = result[3]?.Value<int?>() ?? 0;
                 schedule.SharedCount = result[4]?.Value<int?>() ?? 0;
@@ -244,6 +266,7 @@ namespace TFUserver
 
                 ScheduleManager.Instance.addSharedSchedule(schedule);
                 Console.WriteLine("[{0}] Shared Schedule Added: id={1}, Dic Count={2}", DateTime.Now.ToString("yy-MM-dd hh:mm:ss"), schedule.ScheduleId, ScheduleManager.Instance.sharedScheduleDic.Count);
+                }catch(Exception e){Console.WriteLine(e);}
             }
             else if(rawUrl.StartsWith("/imageupload")){
                 string[] attrs = {"result", "id"};
